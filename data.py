@@ -8,8 +8,9 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 HUMAN_EVAL = os.path.join(ROOT,"HumanEval.jsonl.gz")
 
 
-def read_problems(evalset_file: str = HUMAN_EVAL) -> Dict[str, Dict]:
-    return {task["task_id"]: task for task in stream_jsonl(evalset_file)}
+def read_problems(evalset_file: str = HUMAN_EVAL, limit: int = None) -> Dict[str, Dict]:
+    tasks = stream_jsonl(evalset_file)
+    return {task["task_id"]: task for i, task in enumerate(tasks) if limit is None or i < limit}
 
 
 def stream_jsonl(filename: str) -> Iterable[Dict]:
